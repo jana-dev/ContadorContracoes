@@ -22,8 +22,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ContadorContracoesTheme {
-                val navController = rememberNavController()
-                AppNavHost(navController = navController)
+                Scaffold (
+                    modifier = Modifier.fillMaxSize(),
+                    content = { paddingValues ->
+                        val navController = rememberNavController()
+                        AppNavHost(navController = navController, modifier = Modifier.padding(paddingValues))
+                    }
+                )
+
             }
         }
     }
