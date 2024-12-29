@@ -1,6 +1,11 @@
 package com.janatavares.contadorcontracoes.data.repository
 
-data class ContractionInfo(val titulo: String, val frequencia: String, val intensidade: String, val duracao: String)
+data class ContractionInfo(
+    val titulo: String,
+    val frequencia: String,
+    val intensidade: String,
+    val duracao: String
+)
 
 val contractionInfoList = listOf(
     ContractionInfo(

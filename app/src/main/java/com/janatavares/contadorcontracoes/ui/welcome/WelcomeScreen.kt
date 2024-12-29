@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,14 @@ fun WelcomeScreen(onNavigateToInstructions: () -> Unit){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
+            Text(
+                text = "Contador de Contrações",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary,
+                fontFamily = FontFamily.Cursive
+            )
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo Contador de Contrações",
@@ -47,14 +56,13 @@ fun WelcomeScreen(onNavigateToInstructions: () -> Unit){
 
             )
             Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "Contador de Contrações",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            ElevatedButton (onClick = onNavigateToInstructions){
+            ElevatedButton (
+                onClick = onNavigateToInstructions,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .padding(8.dp)
+            ){
                 Text(text = "Começar")
             }
         }

@@ -13,25 +13,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Lilac,
+    primary = Green,
     onPrimary = Color.Black,
-    secondary = SoftBlue,
+    secondary = LightPink,
     onSecondary = Color.Black,
-    background = SoftBlack,
+    background = Color.Black,
     onBackground = Color.White,
-    surface = DarkGray,
+    surface = Color.Black,
     onSurface = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = DarkLilac,
+    primary = Green,
     onPrimary = Color.White,
-    secondary = MediumBlue,
-    onSecondary = Color.White,
-    background = LightPink, // Fundo claro para a WelcomeScreen
+    secondary = LightPink,
+    onSecondary = Color.Black,
+    background = LightGreen, // Fundo claro para a WelcomeScreen
     onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black
+    surface = LightPink,
+    onSurface = Color.White
 )
 
 @Composable

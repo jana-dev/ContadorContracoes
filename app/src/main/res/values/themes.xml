@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.ContadorContracoes" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.ContadorContracoes" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Cor da barra de navegação padrão do celular -->
+        <item name="android:navigationBarColor">@color/green</item>
+    </style>
 </resources>
