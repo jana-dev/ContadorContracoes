@@ -1,9 +1,7 @@
 package com.janatavares.contadorcontracoes.ui.instructions
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -14,15 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.janatavares.contadorcontracoes.data.repository.Instructions
-import com.janatavares.contadorcontracoes.data.repository.instructionsList
+import com.janatavares.contadorcontracoes.R
+import com.janatavares.contadorcontracoes.data.model.Instructions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstructionsScreen(onNavigateToMain: () -> Unit) {
     val backgroundColor = MaterialTheme.colorScheme.background
+    val instructionsList = getInstructionsList()
     val pagerState = rememberPagerState(initialPage = 0, initialPageOffsetFraction = 0f, pageCount = {instructionsList.size})
     Box(
         modifier = Modifier
@@ -39,7 +39,7 @@ fun InstructionsScreen(onNavigateToMain: () -> Unit) {
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
-                title = { Text(text = "Instruções") }
+                title = { Text(text = stringResource(id = R.string.topappbar_title)) }
             )
 
 
@@ -61,7 +61,6 @@ fun InstructionsScreen(onNavigateToMain: () -> Unit) {
                 horizontalArrangement = Arrangement.Center
             ){
                 repeat(pagerState.pageCount) { index  ->
-                    Log.d("Indicator", "Drawing indicator for page $index")
                     val indicatorColor = if (pagerState.currentPage == index) {
                         MaterialTheme.colorScheme.primary
                     } else {
@@ -80,18 +79,6 @@ fun InstructionsScreen(onNavigateToMain: () -> Unit) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            //Lista de informações
-            /*LazyColumn (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ){
-                items(contractionInfoList) { item ->
-                    ContractionCard(title = item.titulo, frequency = item.frequencia, intensity = item.intensidade, duration = item.duracao)
-                }
-            }*/
-
-            Spacer(modifier = Modifier.height(16.dp))
             ElevatedButton(
                 onClick = onNavigateToMain,
                 modifier = Modifier
@@ -99,7 +86,7 @@ fun InstructionsScreen(onNavigateToMain: () -> Unit) {
                     .height(60.dp)
                     .padding(8.dp)
             ) {
-                Text(text = "Entendi")
+                Text(text = stringResource(id = R.string.instructions_btn))
             }
         }
     }
@@ -114,7 +101,7 @@ fun InstructionPage(instruction: Instructions){
     ){
         Image(
             painter = painterResource(id = instruction.imageRes),
-            contentDescription = null,
+            contentDescription = stringResource(id = R.string.logo_description),
             modifier = Modifier.size(150.dp)
         )
         Box(
@@ -132,29 +119,4 @@ fun InstructionPage(instruction: Instructions){
         }
     }
 }
-
-/*@Composable
-fun ContractionCard(title: String, frequency: String, intensity: String, duration: String){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
-    ){
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ){
-            Text(text = title, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = frequency)
-            Text(text = intensity)
-            Text(text = duration)
-        }
-    }
-}*/
 

@@ -1,21 +1,16 @@
 package com.janatavares.contadorcontracoes.ui.welcome
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,7 +36,7 @@ fun WelcomeScreen(onNavigateToInstructions: () -> Unit){
             verticalArrangement = Arrangement.Center
         ){
             Text(
-                text = "Contador de Contrações",
+                text = stringResource(id = R.string.welcome_title),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -50,7 +45,7 @@ fun WelcomeScreen(onNavigateToInstructions: () -> Unit){
             )
             Image(
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo Contador de Contrações",
+                contentDescription = stringResource(id = R.string.logo_description),
                 modifier = Modifier
                     .size(400.dp)
 
@@ -63,7 +58,7 @@ fun WelcomeScreen(onNavigateToInstructions: () -> Unit){
                     .height(60.dp)
                     .padding(8.dp)
             ){
-                Text(text = "Começar")
+                Text(text = stringResource(id = R.string.welcome_text_btn))
             }
         }
     }

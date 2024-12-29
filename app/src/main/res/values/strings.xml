@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ContadorContracoes</string>
+    <!--Welcome Screen -->
+    <string name="welcome_title">Contador de Contrações</string>
+    <string name="welcome_text_btn">Começar</string>
+    <string name="logo_description">Logo Contador de Contrações</string>
+
+    <!--Instructions Screen -->
+    <string name="topappbar_title">Instruções</string>
+    <string name="instructions_btn">Entendi</string>
 </resources>
