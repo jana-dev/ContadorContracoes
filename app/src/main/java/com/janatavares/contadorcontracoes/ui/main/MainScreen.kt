@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,10 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.janatavares.contadorcontracoes.viewmodel.ContractionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: ContractionViewModel) {
+    val isContractionStarted by viewModel.isContractionStarted.collectAsState()
+
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
@@ -54,9 +59,8 @@ fun MainScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.2f)) // Fundo destacado
-                        //.border(1.dp, MaterialTheme.colorScheme.primary) // Borda ao redor da "tabelinha"
-                        .padding(16.dp) // Padding interno para espaçamento
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.2f))
+                        .padding(16.dp)
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         // Linha dos títulos
@@ -136,15 +140,12 @@ fun MainScreen() {
                     contentAlignment = Alignment.BottomCenter
                 ){
                     LargeFloatingActionButton(
-                        onClick = {  },
-                        containerColor = MaterialTheme.colorScheme.primary
+                        onClick = { viewModel.toggleContractionState() },
+                        containerColor = if (isContractionStarted) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
+                        shape = CircleShape
                     ) {
                         Text(
-                            """
-                            Inicio
-                            da
-                            contração
-                        """.trimIndent(),
+                            text = if (isContractionStarted) "Fim \n da \n contração" else "Inicio \n da \n contração",
                             textAlign = TextAlign.Center
                         )
                     }
