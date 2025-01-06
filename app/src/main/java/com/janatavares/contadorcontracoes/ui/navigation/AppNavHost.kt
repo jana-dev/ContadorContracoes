@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.janatavares.contadorcontracoes.ui.instructions.InstructionsScreen
 import com.janatavares.contadorcontracoes.ui.main.MainScreen
 import com.janatavares.contadorcontracoes.ui.welcome.WelcomeScreen
-import com.janatavares.contadorcontracoes.viewmodel.ContractionViewModel
+import com.janatavares.contadorcontracoes.viewmodel.MainScreenViewModel
 
 @Composable
 fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -29,7 +29,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
             )
         }
         composable("main"){
-            val viewModel: ContractionViewModel = viewModel()
+            val viewModel: MainScreenViewModel = viewModel()
             MainScreen(viewModel = viewModel)
         }
 
