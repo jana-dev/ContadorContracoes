@@ -4,25 +4,31 @@ package com.janatavares.contadorcontracoes.ui.main
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.janatavares.contadorcontracoes.viewmodel.Contraction
 import com.janatavares.contadorcontracoes.viewmodel.MainScreenViewModel
 
 @Composable
 fun MainScreen(viewModel: MainScreenViewModel) {
     val isContractionStarted by viewModel.isContractionStarted.collectAsState()
     val showInitialMessage by viewModel.showInitialMessage.collectAsState()
+    val contractions by viewModel.contractions.collectAsState()
+    val currentDuration by viewModel.currentDuration.collectAsState()
+    val showIntensityDialog by viewModel.showIntensityDialog.collectAsState()
+
+    //val elapsedTime by viewModel.elapsedTime.collectAsState()
+    //var showIntensityDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { MainTopBar() },
@@ -41,7 +47,7 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                     if (showInitialMessage) {
                         InitialMessage()
                     } else {
-                        MainContent(viewModel = viewModel, isContractionStarted = isContractionStarted)
+                        MainContent(viewModel = viewModel, isContractionStarted = isContractionStarted, currentDuration = currentDuration, contractions = contractions)
                     }
                 }
 
@@ -54,10 +60,24 @@ fun MainScreen(viewModel: MainScreenViewModel) {
                     ContractionActionButton(
                         isContractionStarted = isContractionStarted,
                         onClick = {
-                            if (isContractionStarted) viewModel.stopContraction() else viewModel.startContraction()
+                            if (isContractionStarted){
+                                val intensity = "Forte"
+                                viewModel.stopContraction()
+                            } else{
+                                viewModel.startContraction()
+                            }
                         }
                     )
                 }
+            }
+            // Exibir o diálogo de intensidade quando necessário
+            if (showIntensityDialog) {
+                IntensitySelectionDialog(
+                    onDismiss = { viewModel.saveContractionWithIntensity("Não especificado") }, // Caso o usuário feche sem escolher
+                    onIntensitySelected = { intensity ->
+                        viewModel.saveContractionWithIntensity(intensity)
+                    }
+                )
             }
         }
     )
@@ -95,7 +115,10 @@ fun InitialMessage() {
 }
 
 @Composable
-fun ContractionActionButton(isContractionStarted: Boolean, onClick: () -> Unit) {
+fun ContractionActionButton(
+        isContractionStarted: Boolean,
+        onClick: () -> Unit
+) {
     LargeFloatingActionButton(
         onClick = onClick,
         containerColor = if (isContractionStarted) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
@@ -109,7 +132,12 @@ fun ContractionActionButton(isContractionStarted: Boolean, onClick: () -> Unit) 
 }
 
 @Composable
-fun MainContent(viewModel: MainScreenViewModel, isContractionStarted: Boolean) {
+fun MainContent(
+        viewModel: MainScreenViewModel,
+        isContractionStarted: Boolean,
+        currentDuration: String,
+        contractions: List<Contraction>
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         InfoBar()
 
@@ -119,13 +147,26 @@ fun MainContent(viewModel: MainScreenViewModel, isContractionStarted: Boolean) {
                 .weight(1f)
                 .padding(horizontal = 16.dp)
         ) {
-            items(10) { index ->
-                ContractionItem(
-                    number = index + 1,
-                    duration = "5:00",
-                    timestamp = "12:34 - 25/12",
-                    intensity = "Alta"
-                )
+            if (isContractionStarted) {
+                item {
+                    ContractionItem(
+                        number = contractions.size + 1,
+                        duration = currentDuration,
+                        timestamp = "",
+                        intensity = ""
+                    )
+                }
+            }
+            items(contractions.reversed()) { contraction -> // Aqui estamos usando contractions.reversed()
+                val (startTime, timestamp, intensity) = contraction
+                if (intensity != null) {
+                    ContractionItem(
+                        number = contractions.indexOf(contraction) + 1, // Atualizando a numeração com base na ordem decrescente
+                        duration = timestamp,
+                        timestamp = startTime,
+                        intensity = intensity
+                    )
+                }
             }
         }
     }
@@ -192,4 +233,35 @@ fun InfoBar() {
     }
 
     Spacer(modifier = Modifier.height(16.dp))
+}
+
+
+// Diálogo de seleção de intensidade
+@Composable
+fun IntensitySelectionDialog(
+    onDismiss: () -> Unit,
+    onIntensitySelected: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Intensidade da Contração") },
+        text = {
+            Column {
+                listOf("Leve", "Moderada", "Forte").forEach { intensity ->
+                    TextButton(
+                        onClick = { onIntensitySelected(intensity) },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(intensity)
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
 }

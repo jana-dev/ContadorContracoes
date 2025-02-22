@@ -39,7 +39,7 @@ fun ContractionItem(
                 style = MaterialTheme.typography.bodySmall
             )
             Text(
-                text = "Intensidade: $intensity",
+                text = intensity,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth()
